@@ -1,0 +1,7 @@
+Date: Wed, 14 Sep 2016 03:54:39 -0700
+From: Sender <sender@example.com>
+To: receiver@example.com
+Subject: Message
+Message-ID: <20160914035439.03264562@mininet-vm>
+
+Toto je tělo e-mailu. Před tělem e-mailu jsou hlavičky a prázdný řádek. 
