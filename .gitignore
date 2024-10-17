@@ -37,5 +37,5 @@ imapcl
 
 # Folders
 tmp/
-tmp/messages_downloaded/
 log/
+obj/
