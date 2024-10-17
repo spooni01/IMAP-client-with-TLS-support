@@ -20,6 +20,9 @@ jobs:
       - name: Build project
         run: make
 
+      - name: Create log directory (if necessary)
+        run: mkdir -p log || true
+
       - name: Run Valgrind analysis
         run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=log/valgrind-log-github.txt ./imapcl
 
