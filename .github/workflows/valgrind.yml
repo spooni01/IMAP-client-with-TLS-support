@@ -1,8 +1,8 @@
 name: Valgrind Analysis
 
 on:
-  push {}
-  pull_request {}
+  push:
+  pull_request:
 
 jobs:
   build-and-analyze:
