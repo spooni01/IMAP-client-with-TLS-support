@@ -1,0 +1,25 @@
+name: Benchmarking
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install JMH
+        run: |
+          sudo apt update
+          sudo apt install openjdk-11-jdk
+
+      - name: Run JMH benchmarks
+        run: |
+          java -jar jmh.jar -rf json -bs 10 -wi 10 -i 10 -s 10 -gc true MyBenchmark
+
+      - name: Analyze results
+        run: |
+          # Analyze the JSON results using a tool like jq or Python

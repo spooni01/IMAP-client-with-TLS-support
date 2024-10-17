@@ -7,11 +7,11 @@
 COMPILER = g++
 COMPILER_FLAGS = -std=c++20 -Wall -Wextra -Werror
 PROGRAM_NAME = imapcl
-DOC=documentation
+DOC=manual
 OBJ_DIR = obj
 DOC_DIR = doc
 
-.PHONY: make run doc valgrind clean pack
+.PHONY: make run doc test benchmark valgrind clean pack
 
 make: src/main.cpp
 	$(COMPILER) $(COMPILER_FLAGS) src/main.cpp -o $(PROGRAM_NAME)
@@ -41,6 +41,13 @@ doc: $(OBJ_DIR) $(DOC_DIR)/$(DOC).tex
 	if [ -e $(DOC_DIR)/$(DOC).toc ]; then mv $(DOC_DIR)/$(DOC).toc $(OBJ_DIR)/$(DOC).toc; fi
 	if [ -e $(DOC_DIR)/$(DOC).pdf.filepart ]; then mv $(DOC_DIR)/$(DOC).pdf.filepart $(OBJ_DIR)/$(DOC).pdf.filepart; fi
 	if [ -e $(DOC_DIR)/$(DOC).pdf ]; then mv $(DOC_DIR)/$(DOC).pdf $(DOC).pdf; fi
+
+test: make
+	g++ test/init.cpp -o test/run -lgtest -lgtest_main
+	./test/run
+
+benchmark: make
+	g++ -std=c++11 -O3 test/benchmark/init.cpp -lbenchmark
 
 valgrind:
 	valgrind --leak-check=full \

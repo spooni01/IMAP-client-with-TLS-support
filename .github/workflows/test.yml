@@ -1,0 +1,21 @@
+name: Project Tests
+
+on:
+  push:
+  pull_request:
+  
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3 
+
+      - name: Install dependencies
+        run: | 
+          sudo apt update
+          sudo apt install -y make 
+          sudo apt install libgtest-dev
+
+      - name: Run Tests
+        run: make test  
