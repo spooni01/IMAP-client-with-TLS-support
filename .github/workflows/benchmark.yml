@@ -11,15 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install JMH
+      - name: Install Google Benchmark
         run: |
-          sudo apt update
-          sudo apt install openjdk-11-jdk
+          git clone https://github.com/google/benchmark
+          cd benchmark
+          cmake .
+          make
+          sudo make install
 
-      - name: Run JMH benchmarks
+      - name: Run benchmarks
         run: |
-          java -jar jmh.jar -rf json -bs 10 -wi 10 -i 10 -s 10 -gc true MyBenchmark
+          make benchmark
 
       - name: Analyze results
         run: |
-          # Analyze the JSON results using a tool like jq or Python
+          # Analyze the results 
