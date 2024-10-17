@@ -24,7 +24,3 @@ int main (int argc, char* argv[])
     return 0;
 
 }
-
-void testFunc() {
-    std::cout << "Hello, ISA project!" << std::endl;
-}
