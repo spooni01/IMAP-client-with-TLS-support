@@ -15,7 +15,7 @@ jobs:
         run: |
           git clone https://github.com/google/benchmark
           cd benchmark
-          cmake .
+          cmake . -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON
           make
           sudo make install
 
