@@ -1,11 +1,12 @@
-name: Valgrind Analysis
+name: Jobs
 
 on:
   push:
   pull_request:
 
 jobs:
-  build-and-analyze:
+
+  valgrind:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,3 +41,44 @@ jobs:
         with:
           name: valgrind-report
           path: log/valgrind-log-github.txt
+
+
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3 
+
+      - name: Install dependencies
+        run: | 
+          sudo apt update
+          sudo apt install -y make 
+          sudo apt install libgtest-dev
+
+      - name: Run Tests
+        run: make test  
+
+
+
+  benchmark:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Google Benchmark
+        run: |
+          git clone https://github.com/google/benchmark
+          cd benchmark
+          cmake . -DBENCHMARK_DOWNLOAD_DEPENDENCIES=ON
+          make
+          sudo make install
+
+      - name: Run benchmarks
+        run: |
+          make benchmark
+
+      - name: Analyze results
+        run: |
+          # Analyze the results 
