@@ -1,0 +1,79 @@
+\documentclass[a4paper, 11pt]{article}
+
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[left=2cm, top=3cm, text={17cm, 24cm}]{geometry}
+\usepackage{times}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[unicode]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue, 
+    citecolor=blue
+}
+
+\begin{document}
+
+	%%%%% Titulná stránka %%%%%
+	\begin{titlepage}
+		\begin{center}
+			\includegraphics[width=0.77\linewidth]{res/logo_FIT.pdf} \\
+
+			\vspace{\stretch{0.382}}
+
+			\Huge{IMAP client with TLS support} \\
+			\LARGE{Documentation} \\
+			\Large{Author: Adam Ližičiar (xlizic00)}
+			\vspace{\stretch{0.618}}
+		\end{center}
+
+		\begin{minipage}{0.4 \textwidth}
+			{\Large \today}
+		\end{minipage}
+		\hfill
+	\end{titlepage}
+
+
+
+	%%%%% Obsah %%%%%
+	\pagenumbering{roman}
+	\setcounter{page}{1}
+	\tableofcontents
+	\clearpage
+
+
+
+	%%%%% Introduction %%%%%
+	\pagenumbering{arabic}
+	\setcounter{page}{1}
+
+	\section{Introduction}
+
+	// todo
+
+	%%%%% Implementace %%%%%
+	\section{TBD}
+
+	\subsection{TBD}
+	// todo 
+
+	%%%%% Conclusion %%%%%
+	\section{Conclusion}
+	// todo
+
+
+	%%%%% Attachment %%%%%
+	\clearpage
+	\appendix
+
+	\section{Attachment}
+
+	\subsection{TBD}
+	// todo
+	\newpage
+
+\end{document}

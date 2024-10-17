@@ -1,0 +1,33 @@
+name: Valgrind Analysis
+
+on:
+  push {}
+  pull_request {}
+
+jobs:
+  build-and-analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build project
+        run: make
+
+      - name: Run Valgrind analysis
+        run: valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=log/valgrind-log-github.txt ./imapcl
+
+      - name: Check for memory leaks
+        run: |
+          if grep -q "ERROR SUMMARY: 0 errors from 0 contexts" log/valgrind-log-github.txt; then
+            echo "No memory leaks detected."
+          else
+            echo "Memory leaks detected. Please check log/valgrind-log-github.txt for details."
+            exit 1
+          fi
+
+      - name: Upload Valgrind report
+        uses: actions/upload-artifact@v3
+        with:
+          name: valgrind-report
+          path: log/valgrind-log-github.txt

@@ -34,3 +34,7 @@ imapcl
 
 # Archives
 *.tar
+
+# Folders
+tmp/
+log/
