@@ -5,7 +5,8 @@
 ################################################################
 
 COMPILER = g++
-COMPILER_FLAGS = -std=c++20 -lssl -lcrypto -Wall -Wextra -Werror
+COMPILER_FLAGS = -std=c++20 -Wall -Wextra -Werror
+COMPILER_AFTER_FLAGS = -lssl -lcrypto 
 DEBUG_FLAGS = -DDEBUG
 PROGRAM_NAME = imapcl
 DOC=manual
@@ -15,13 +16,13 @@ DOC_DIR = doc
 .PHONY: make run doc test benchmark valgrind clean pack
 
 make: src/main.cpp
-	$(COMPILER) $(COMPILER_FLAGS) src/main.cpp -o $(PROGRAM_NAME)
+	$(COMPILER) $(COMPILER_FLAGS) src/main.cpp -o $(PROGRAM_NAME) $(PROCOMPILER_AFTER_FLAGSGRAM_NAME)
 
 run: make
 	./$(PROGRAM_NAME)
 
 debug:
-	$(COMPILER) $(COMPILER_FLAGS) $(DEBUG_FLAGS) src/main.cpp -o $(PROGRAM_NAME)_debug
+	$(COMPILER) $(COMPILER_FLAGS) $(DEBUG_FLAGS) src/main.cpp -o $(PROGRAM_NAME)_debug $(PROCOMPILER_AFTER_FLAGSGRAM_NAME)
 	./$(PROGRAM_NAME)_debug
 
 $(OBJ_DIR):
@@ -67,6 +68,7 @@ clean:
 	rm -f tests/run
 	rm -f *.exe *.out *.core *.tar
 	rm -f $(PROGRAM_NAME)
+	rm -f $(PROGRAM_NAME)_debug
 
 pack:
 	tar -cvf xlizic00.tar .
