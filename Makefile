@@ -63,7 +63,7 @@ valgrind:
         --track-origins=yes \
         --verbose \
         --log-file=log/valgrind-log-$(shell date +%Y%m%d-%H%M%S).txt \
-        ./$(PROGRAM_NAME) 
+        ./$(PROGRAM_NAME) $(PROGRAM_PARAMS)
 
 clean:
 	rm -f tests/run

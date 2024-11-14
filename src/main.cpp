@@ -11,7 +11,6 @@
  *	@param	argc Number of parameters.
  *	@param	argv Parameters.
  *	@return	`0` on success, error code (1 to infinity) on a error.
- *	@throws	todo
  */
 int main (int argc, char* argv[])
 {
