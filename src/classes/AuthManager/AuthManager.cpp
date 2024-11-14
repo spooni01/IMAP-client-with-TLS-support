@@ -34,7 +34,7 @@ void AuthManager::parseFile(const std::string& filepath)
     std::ifstream file(filepath);
     if (!file.is_open()) {
         DEBUG_PRINT(ANSI_COLOR_RED, "AuthManager::parseFile() -> Unable to open authentication file.");
-        throw AuthenticateException("Unable to open authentication file: " + filepath);
+        throw FileException("Unable to open authentication file: " + filepath);
     }
 
     std::string line;

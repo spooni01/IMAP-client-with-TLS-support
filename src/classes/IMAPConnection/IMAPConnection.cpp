@@ -95,7 +95,7 @@ SSL_CTX *IMAPConnection::createSSLContext()
     if (!ctx) {
         DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::createSSLContext() -> Unable to create SSL context");
         ERR_print_errors_fp(stderr);
-        throw ConnectionException("IMAPConnection::createSSLContext() -> Unable to create BIO connection.");
+        throw SSLException("IMAPConnection::createSSLContext() -> Unable to create BIO connection.");
     }
 
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::createSSLContext() -> SSL context created successfully.");
@@ -160,7 +160,7 @@ SSL *IMAPConnection::createSSLConnection(SSL_CTX *ctx, BIO *bio)
     if (!ssl) {
         DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::createSSLConnection() -> Unable to create SSL object");
         ERR_print_errors_fp(stderr);
-        throw ConnectionException("Unable to create SSL object.");
+        throw SSLException("Unable to create SSL object.");
     }
 
     SSL_set_bio(ssl, bio, bio);
@@ -169,7 +169,7 @@ SSL *IMAPConnection::createSSLConnection(SSL_CTX *ctx, BIO *bio)
     if (SSL_connect(ssl) <= 0) {
         DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::createSSLConnection() -> SSL connection failed");
         ERR_print_errors_fp(stderr);
-        throw ConnectionException("SSL connection failed.");
+        throw SSLException("SSL connection failed.");
     }
 
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::createSSLConnection() -> SSL connection established.");
@@ -196,7 +196,7 @@ void IMAPConnection::sendCommand(const char *command)
         if (SSL_write(this->ssl, command, strlen(command)) <= 0) {
             DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::sendCommand() -> Unable to send command via SSL");
             ERR_print_errors_fp(stderr);
-            throw ConnectionException("Unable to send command via SSL.");
+            throw SSLException("Unable to send command via SSL.");
         }
         DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::sendCommand() -> IMAP command sent via SSL.");
    
@@ -247,7 +247,7 @@ std::string IMAPConnection::readResponse()
         if (bytes < 0) {
             DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::readResponse() -> Unable to read response via SSL.");
             ERR_print_errors_fp(stderr);
-            throw ConnectionException("Unable to read response via SSL.");
+            throw SSLException("Unable to read response via SSL.");
         }
 
     } else {

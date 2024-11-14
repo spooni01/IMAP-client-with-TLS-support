@@ -16,6 +16,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <fstream>
+#include <vector>
 #include "openssl/bio.h"
 #include "openssl/ssl.h"
 #include "openssl/err.h"
@@ -48,8 +49,8 @@
 #include "classes/IMAPClient/IMAPClient.cpp"
 #include "classes/AuthManager/AuthManager.cpp"
 #include "classes/ArgsParser/ArgsParser.cpp"
-#include "classes/MessageFactory/MessageFactory.cpp"
 #include "classes/Message/Message.cpp"
+#include "classes/MessageFactory/MessageFactory.cpp"
 #include "classes/IMAPConnection/IMAPConnection.cpp"
 
 

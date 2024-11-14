@@ -17,9 +17,9 @@ int main (int argc, char* argv[])
 
     try {
 
-        ArgsParser argsParser(argc, argv);  // Parse arguments    
-        AuthManager authManager(argsParser.getAuthFile());  // Parse authorization file
-        IMAPConnection connection(true, argsParser.getServer(), argsParser.getPort());  // Create connection
+        ArgsParser argsParser(argc, argv);  // Parse arguments.    
+        AuthManager authManager(argsParser.getAuthFile());  // Parse authorization file.
+        IMAPConnection connection(true, argsParser.getServer(), argsParser.getPort());  // Create connection.
 
         // IMAP login
         std::string tmpLoginCommand = "001 LOGIN " + authManager.getUsername() + " " + authManager.getPassword() + "\r\n";
@@ -39,14 +39,20 @@ int main (int argc, char* argv[])
         std::cout << connection.readResponse() << std::endl;
 
 
-    } catch (const ConnectionException& e) {
-        std::cerr << ANSI_COLOR_RED << "Connection error (" << e.code() << ")" << ANSI_COLOR_RESET << ": " << e.what() << std::endl;
-        return e.code();
     } catch (const ArgumentsException& e) {
         std::cerr << ANSI_COLOR_RED << "Arguments error (" << e.code() << ")" << ANSI_COLOR_RESET << ": " << e.what() << std::endl;
         return e.code();
     } catch (const AuthenticateException& e) {
         std::cerr << ANSI_COLOR_RED << "Authenticate error (" << e.code() << ")" << ANSI_COLOR_RESET << ": " << e.what() << std::endl;
+        return e.code();
+    } catch (const ConnectionException& e) {
+        std::cerr << ANSI_COLOR_RED << "Connection error (" << e.code() << ")" << ANSI_COLOR_RESET << ": " << e.what() << std::endl;
+        return e.code();
+    } catch (const FileException& e) {
+        std::cerr << ANSI_COLOR_RED << "File error (" << e.code() << ")" << ANSI_COLOR_RESET << ": " << e.what() << std::endl;
+        return e.code();
+    } catch (const SSLException& e) {
+        std::cerr << ANSI_COLOR_RED << "SSL error (" << e.code() << ")" << ANSI_COLOR_RESET << ": " << e.what() << std::endl;
         return e.code();
     } catch (const IMAPException& e) {
         std::cerr << ANSI_COLOR_RED << "IMAP error (" << e.code() << ")" << ANSI_COLOR_RESET << ": " << e.what() << std::endl;
