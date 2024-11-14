@@ -8,6 +8,6 @@ class ArgumentsException : public IMAPException {
 public:
 
     ArgumentsException(const std::string& message)
-        : IMAPException(message, 4) {}
+        : IMAPException(message, 10) {}
 
 };

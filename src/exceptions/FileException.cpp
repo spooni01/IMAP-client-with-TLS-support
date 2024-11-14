@@ -8,6 +8,6 @@ class FileException : public IMAPException {
 public:
 
     FileException(const std::string& message)
-        : IMAPException(message, 6) {}
+        : IMAPException(message, 12) {}
 
 };

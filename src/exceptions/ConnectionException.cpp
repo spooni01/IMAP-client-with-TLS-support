@@ -8,6 +8,6 @@ class ConnectionException : public IMAPException {
 public:
 
     ConnectionException(const std::string& message)
-        : IMAPException(message, 3) {}
+        : IMAPException(message, 20) {}
 
 };

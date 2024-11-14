@@ -8,6 +8,6 @@ class AuthenticateException : public IMAPException {
 public:
 
     AuthenticateException(const std::string& message)
-        : IMAPException(message, 5) {}
+        : IMAPException(message, 11) {}
 
 };

@@ -126,13 +126,13 @@ BIO *IMAPConnection::createBioConnection(const char *host, int port)
     bio = BIO_new_connect(host_with_port);
     if (!bio) {
         DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::createBioConnection() -> Unable to create BIO connection");
-        throw ConnectionException("Unable to create BIO connection.");
+        throw BIOException("Unable to create BIO connection.");
     }
 
     // Try connect to server.
     if (BIO_do_connect(bio) <= 0) {
         DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::createBioConnection() -> Unable to connect to server");
-        throw ConnectionException("Unable to connect to server.");
+        throw BIOException("Unable to connect to server.");
     }
 
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::createBioConnection() -> BIO connection established.");
@@ -206,7 +206,7 @@ void IMAPConnection::sendCommand(const char *command)
         if (BIO_write(bio, command, strlen(command)) <= 0) {
             DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::sendCommand() -> Unable to send command via BIO");
             ERR_print_errors_fp(stderr);
-            throw ConnectionException("Unable to send command via BIO.");
+            throw BIOException("Unable to send command via BIO.");
         }
         DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::sendCommand() -> IMAP command sent via BIO.");
     
@@ -266,7 +266,7 @@ std::string IMAPConnection::readResponse()
         if (bytes < 0) {
             DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::readResponse() -> Unable to read response via BIO.");
             ERR_print_errors_fp(stderr);
-            throw ConnectionException("Unable to read response via BIO.");
+            throw BIOException("Unable to read response via BIO.");
         }
 
     }

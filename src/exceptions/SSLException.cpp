@@ -8,6 +8,6 @@ class SSLException : public IMAPException {
 public:
 
     SSLException(const std::string& message)
-        : IMAPException(message, 6) {}
+        : IMAPException(message, 21) {}
 
 };

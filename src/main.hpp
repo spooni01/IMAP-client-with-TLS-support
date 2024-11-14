@@ -37,8 +37,9 @@
 
 // Exceptions
 #include "exceptions/IMAPException.cpp"
-#include "exceptions/AuthenticateException.cpp"
 #include "exceptions/ArgumentsException.cpp"
+#include "exceptions/AuthenticateException.cpp"
+#include "exceptions/BIOException.cpp"
 #include "exceptions/CommandException.cpp"
 #include "exceptions/ConnectionException.cpp"
 #include "exceptions/FileException.cpp"
@@ -46,12 +47,12 @@
 #include "exceptions/SSLException.cpp"
 
 // Include classes
-#include "classes/IMAPClient/IMAPClient.cpp"
 #include "classes/AuthManager/AuthManager.cpp"
 #include "classes/ArgsParser/ArgsParser.cpp"
 #include "classes/Message/Message.cpp"
 #include "classes/MessageFactory/MessageFactory.cpp"
 #include "classes/IMAPConnection/IMAPConnection.cpp"
+#include "classes/IMAPClient/IMAPClient.cpp"
 
 
 #endif // MAIN_HPP
