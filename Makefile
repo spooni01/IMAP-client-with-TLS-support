@@ -56,6 +56,7 @@ benchmark: make
 
 valgrind:
 	valgrind --leak-check=full \
+		--suppressions=test/valgrind/suppressions.valgrind \
         --show-leak-kinds=all \
         --track-origins=yes \
         --verbose \
