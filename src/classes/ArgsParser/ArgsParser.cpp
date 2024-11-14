@@ -1,6 +1,6 @@
 /**
  *	@file	Classes/IMAPConnection/IMAPConnection.cpp
- *	@brief	IMAPConnection header file
+ *	@brief	IMAPConnection file
  *	@author	Adam Ližičiar (xlizic00@stud.fit.vutbr.cz)
  */
 
@@ -16,8 +16,12 @@
 ArgsParser::ArgsParser(int argc, char* argv[]) : port(0), useTLS(false), readOnlyNew(false), headersOnly(false)
 {
     
+    DEBUG_PRINT(ANSI_COLOR_GRAY, "ArgsParser::ArgsParser() -> Starting of parsing of argument...");
+
     parseArguments(argc, argv);
     validateArguments();
+
+    DEBUG_PRINT(ANSI_COLOR_GREEN, "ArgsParser::ArgsParser() -> Parsing and validating arguments successful.");
 
 }
 
@@ -55,6 +59,7 @@ void ArgsParser::parseArguments(int argc, char* argv[])
         } else if (server.empty()) {
             server = arg;  // First non-flag argument is treated as the server address.
         } else {
+            DEBUG_PRINT(ANSI_COLOR_RED, "ArgsParser::parseArguments() -> Unknown or improperly formatted argument.");
             throw ArgumentsException("Unknown or improperly formatted argument: " + arg);
         }
     }
@@ -71,16 +76,22 @@ void ArgsParser::parseArguments(int argc, char* argv[])
 void ArgsParser::validateArguments()
 {
 
+    DEBUG_PRINT(ANSI_COLOR_GRAY, "ArgsParser::validateArguments() -> Starting of validating of arguments...");
+
     if (server.empty()) {
+        DEBUG_PRINT(ANSI_COLOR_RED, "ArgsParser::validateArguments() -> Server address is required.");
         throw ArgumentsException("Server address is required.");
     }
     if (authFile.empty()) {
+        DEBUG_PRINT(ANSI_COLOR_RED, "ArgsParser::validateArguments() -> Authentication file (-a) is required.");
         throw ArgumentsException("Authentication file (-a) is required.");
     }
     if (outDir.empty()) {
+        DEBUG_PRINT(ANSI_COLOR_RED, "ArgsParser::validateArguments() -> Output directory (-o) is required.");
         throw ArgumentsException("Output directory (-o) is required.");
     }
     if (port <= 0 || port > 65535) {
+        DEBUG_PRINT(ANSI_COLOR_RED, "ArgsParser::validateArguments() -> Port must be a valid number between 1 and 65535.");
         throw ArgumentsException("Port must be a valid number between 1 and 65535.");
     }
 

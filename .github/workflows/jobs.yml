@@ -26,7 +26,7 @@ jobs:
         run: mkdir -p log || true
 
       - name: Run Valgrind analysis
-        run: valgrind --leak-check=full --suppressions=test/valgrind/suppressions.valgrind --show-leak-kinds=all --track-origins=yes --verbose --log-file=log/valgrind-log-github.txt ./imapcl
+        run: valgrind --leak-check=full --suppressions=test/valgrind/suppressions.valgrind --show-leak-kinds=all --track-origins=yes --verbose --log-file=log/valgrind-log-github.txt ./imapcl imap.stud.fit.vutbr.cz -p 993 -a config/auth.txt -o maildir
 
       - name: Check for memory leaks
         run: |

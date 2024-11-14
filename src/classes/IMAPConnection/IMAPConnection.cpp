@@ -20,7 +20,7 @@
 IMAPConnection::IMAPConnection(bool secure, const char *server, int port) : secure(secure)
 {
     
-    DEBUG_PRINT(ANSI_COLOR_RESET, "IMAPConnection::IMAPConnection() -> Starting IMAP connection...");
+    DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPConnection::IMAPConnection() -> Starting IMAP connection...");
     
     if(this->secure) {
         this->initOpenSSL();

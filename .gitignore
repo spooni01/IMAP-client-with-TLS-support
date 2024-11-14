@@ -44,7 +44,7 @@ obj/
 maildir/
 
 # Secrets
-config/
+# config/
 
 # Development files
 todo
