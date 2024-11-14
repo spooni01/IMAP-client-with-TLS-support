@@ -5,7 +5,8 @@
 ################################################################
 
 COMPILER = g++
-COMPILER_FLAGS = -std=c++20 -Wall -Wextra -Werror
+COMPILER_FLAGS = -std=c++20 -lssl -lcrypto -Wall -Wextra -Werror
+DEBUG_FLAGS = -DDEBUG
 PROGRAM_NAME = imapcl
 DOC=manual
 OBJ_DIR = obj
@@ -18,6 +19,10 @@ make: src/main.cpp
 
 run: make
 	./$(PROGRAM_NAME)
+
+debug:
+	$(COMPILER) $(COMPILER_FLAGS) $(DEBUG_FLAGS) src/main.cpp -o $(PROGRAM_NAME)_debug
+	./$(PROGRAM_NAME)_debug
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
