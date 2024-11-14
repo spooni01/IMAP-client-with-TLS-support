@@ -12,6 +12,9 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <unordered_map>
+#include <stdexcept>
+#include <cstdlib>
 #include "openssl/bio.h"
 #include "openssl/ssl.h"
 #include "openssl/err.h"
@@ -33,6 +36,7 @@
 // Exceptions
 #include "exceptions/IMAPException.cpp"
 #include "exceptions/AuthenticateException.cpp"
+#include "exceptions/ArgumentsException.cpp"
 #include "exceptions/CommandException.cpp"
 #include "exceptions/ConnectionException.cpp"
 #include "exceptions/FileException.cpp"

@@ -41,6 +41,7 @@ tmp/
 log/
 obj/
 .vscode/
+maildir/
 
 # Secrets
 config/

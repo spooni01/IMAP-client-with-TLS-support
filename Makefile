@@ -9,6 +9,7 @@ COMPILER_FLAGS = -std=c++20 -Wall -Wextra -Werror
 COMPILER_AFTER_FLAGS = -lssl -lcrypto 
 DEBUG_FLAGS = -DDEBUG
 PROGRAM_NAME = imapcl
+PROGRAM_PARAMS = imap.stud.fit.vutbr.cz -p 993 -a config/auth.txt -o maildir
 DOC=manual
 OBJ_DIR = obj
 DOC_DIR = doc
@@ -19,11 +20,11 @@ make: src/main.cpp
 	$(COMPILER) $(COMPILER_FLAGS) src/main.cpp -o $(PROGRAM_NAME) $(COMPILER_AFTER_FLAGS)
 
 run: make
-	./$(PROGRAM_NAME)
+	./$(PROGRAM_NAME) $(PROGRAM_PARAMS)
 
 debug:
 	$(COMPILER) $(COMPILER_FLAGS) $(DEBUG_FLAGS) src/main.cpp -o $(PROGRAM_NAME)_debug $(COMPILER_AFTER_FLAGS)
-	./$(PROGRAM_NAME)_debug
+	./$(PROGRAM_NAME)_debug $(PROGRAM_PARAMS)
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
