@@ -16,13 +16,13 @@ DOC_DIR = doc
 .PHONY: make run doc test benchmark valgrind clean pack
 
 make: src/main.cpp
-	$(COMPILER) $(COMPILER_FLAGS) src/main.cpp -o $(PROGRAM_NAME) $(PROCOMPILER_AFTER_FLAGSGRAM_NAME)
+	$(COMPILER) $(COMPILER_FLAGS) src/main.cpp -o $(PROGRAM_NAME) $(COMPILER_AFTER_FLAGS)
 
 run: make
 	./$(PROGRAM_NAME)
 
 debug:
-	$(COMPILER) $(COMPILER_FLAGS) $(DEBUG_FLAGS) src/main.cpp -o $(PROGRAM_NAME)_debug $(PROCOMPILER_AFTER_FLAGSGRAM_NAME)
+	$(COMPILER) $(COMPILER_FLAGS) $(DEBUG_FLAGS) src/main.cpp -o $(PROGRAM_NAME)_debug $(COMPILER_AFTER_FLAGS)
 	./$(PROGRAM_NAME)_debug
 
 $(OBJ_DIR):
