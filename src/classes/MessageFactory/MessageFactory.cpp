@@ -10,12 +10,7 @@
 /**
  *  @brief	Default constructor for the MessageFactory class.
  */
-MessageFactory::MessageFactory()
-{
-
-    // TODO Message factory
-
-}
+MessageFactory::MessageFactory() {}
 
 
 /**
@@ -26,21 +21,22 @@ MessageFactory::MessageFactory()
 void MessageFactory::addNewMessage(std::string nonParsedPacket)
 {
 
-    // Parse
     Message msg(nonParsedPacket);
+    this->listOfMessages.push_back(Message(msg));
 
-    // Ensure the directory 'maildir' exists
-    std::string directory = "maildir";
+
+    // Ensure the directory exists.
+    std::string directory = "maildir"; // TODO !!! directory change !!!
     if (!std::filesystem::exists(directory)) {
         if (!std::filesystem::create_directory(directory)) {
             throw std::runtime_error("Failed to create directory: " + directory);
         }
     }
 
-    // Define the file path
+    // Define the file path.
     std::string filePath = directory + "/" + msg.getFileName() + ".txt";
 
-    // Open the file and write the content
+    // Open the file and write the content.
     std::ofstream outFile(filePath);
     if (!outFile) {
         throw std::runtime_error("Failed to open file for writing: " + filePath);

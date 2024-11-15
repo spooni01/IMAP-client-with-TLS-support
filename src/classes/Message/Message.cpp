@@ -129,9 +129,9 @@ std::string Message::getFileName() const
 {
 
     if (!messageID.empty() && messageID.front() == '<' && messageID.back() == '>')
-        return messageID.substr(1, messageID.size() - 2);
+        return subject + "_" + messageID.substr(1, messageID.size() - 2);
 
-    return messageID; 
+    return subject + "_" + messageID; 
 
 }
 
