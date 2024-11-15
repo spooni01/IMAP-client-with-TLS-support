@@ -36,7 +36,40 @@ public:
     std::string getFileName() const;
     
     
-    friend class MessageTest; // Access for testing.
+    /**
+     * @brief Extracts the UID from the raw message.
+     *
+     * @return A string containing the extracted UID.
+     */
+    std::string getExtractedUID() const { return extractUID(rawMessage); }
+
+    /**
+     * @brief Decodes a MIME-encoded string.
+     *
+     * @param text The MIME-encoded string to decode.
+     * @return A string containing the decoded text.
+     */
+    std::string getDecodedMime(const std::string& text) const { return decodeMime(text); }
+
+    /**
+     * @brief Removes the last line from the given string.
+     *
+     * @param body The input string representing the message body.
+     * @return A string with the last line removed.
+     */
+    std::string getLastLineRemoved(const std::string& body) const { return removeLastLine(body); }
+
+    /**
+     * @brief Retrieves the headers of the message.
+     *
+     * This method returns the map of headers parsed from the raw message. The headers typically include information
+     * such as "From", "To", "Subject", and "Date".
+     *
+     * @return A constant reference to a map of headers (key-value pairs) extracted from the raw message.
+     */
+    const std::map<std::string, std::string>& getHeaders() const {
+        return headers;
+    }
 
 
 private:
