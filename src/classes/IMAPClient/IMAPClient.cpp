@@ -10,6 +10,7 @@
 /**
  * @brief Constructor for the IMAPClient class, this function is main controller of entire program.
  * 
+ * Representation of use case diagram.
  * 
  * @param argc The number of command-line arguments passed to the program.
  * @param argv The array of command-line argument strings.
@@ -22,6 +23,7 @@ IMAPClient::IMAPClient(int argc, char* argv[])
 
 
     // Loop until it is not end of program (FSM state = END).
+    // This loop represents use case diagram.
     while(FSM.getState() != FiniteStateMachine::State::END) {
 
         // INIT: When FSM state is INIT, switch to AUTH.
@@ -86,6 +88,7 @@ IMAPClient::IMAPClient(int argc, char* argv[])
             DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages ID`s fetched sucessful.");
 
             // Download emails.
+            // TODO!!!
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to downloading emails...");
             if(argsParser.isHeadersOnly())
                 connection.sendCommand((this->getNextCommand() + " UID FETCH 2032 BODY.PEEK[HEADER]\r\n").c_str());
