@@ -33,6 +33,13 @@ public:
 	 */
 	MessageFactory();
 
+	/**
+ 	 *  @brief	Add new message to listOfMessages
+	 * 
+	 *  @param  nonParsedPacket Non parsed packet.
+	 */
+	void addNewMessage(std::string nonParsedPacket);
+
 };
 
 #endif // MESSAGEFACTORY_HPP

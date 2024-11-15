@@ -59,7 +59,17 @@ private:
      * The IMAPConnection object is responsible for establishing a connection to
      * the specified server and port and ensuring that the connection is secure (if necessary).
      */
-    IMAPConnection connection;     
+    IMAPConnection connection;   
+
+
+    /**
+     * @brief The MessageFactory object that manages email messages.
+     * 
+     * The MessageFactory object is responsible for storing, parsing, and managing
+     * email messages received from the IMAP server. It provides functionality to 
+     * add, retrieve, and process email messages, including handling their headers and bodies.
+     */
+    MessageFactory emails;  
 
 };
 

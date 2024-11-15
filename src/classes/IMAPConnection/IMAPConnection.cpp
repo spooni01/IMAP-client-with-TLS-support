@@ -220,13 +220,15 @@ void IMAPConnection::sendCommand(const char *command)
  *  
  *  Reads and prints the server's response after sending an IMAP command.
  *
+ *  @param endCondition The specific condition, that must be in the packet to end packets reading.
+ * 
  *  @return The server's response as a std::string.
  */
-std::string IMAPConnection::readResponse()
+std::string IMAPConnection::readResponse(const std::string& endCondition)
 {
 
     DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPConnection::readResponse() -> Reading IMAP response...");
-    char buffer[1024];
+    char buffer[4096];
     int bytes;
     std::string response; 
 
@@ -235,19 +237,25 @@ std::string IMAPConnection::readResponse()
 
         while ((bytes = SSL_read(this->ssl, buffer, sizeof(buffer) - 1)) > 0) {
             buffer[bytes] = '\0';  
-            response += buffer;  
+            response += buffer;
 
-            if (strstr(buffer, "\r\n") != NULL) {
-                DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::readResponse() -> End of response received.");
-                break; 
+            // Check for the specified end condition.
+            if (response.find(endCondition) != std::string::npos) {
+                DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::readResponse() -> End of response received with specified condition.");
+                break;
             }
         }
 
-        // Problem while reading message.
+        // If there is an error while reading message with SSL.
         if (bytes < 0) {
             DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::readResponse() -> Unable to read response via SSL.");
             ERR_print_errors_fp(stderr);
             throw SSLException("Unable to read response via SSL.");
+        }
+
+        // Recursive call to continue reading if full response not yet received.
+        if (bytes > 0 && response.find(endCondition) == std::string::npos) {
+            response += this->readResponse(endCondition);
         }
 
     } else {
@@ -256,21 +264,26 @@ std::string IMAPConnection::readResponse()
             buffer[bytes] = '\0';  
             response += buffer;    
 
-            if (strstr(buffer, "\r\n") != NULL) {
-                DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::readResponse() -> End of response received.");
-                break; 
+            // Check for the specified end condition.
+            if (response.find(endCondition) != std::string::npos) {
+                DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::readResponse() -> End of response received with specified condition.");
+                break;
             }
         }
 
-        // Problem while reading message.
+        // If there is an error while reading message with BIO.
         if (bytes < 0) {
             DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::readResponse() -> Unable to read response via BIO.");
             ERR_print_errors_fp(stderr);
             throw BIOException("Unable to read response via BIO.");
         }
 
+        // Recursive call to continue reading if full response not yet received.
+        if (bytes > 0 && response.find(endCondition) == std::string::npos) {
+            response += this->readResponse(endCondition);
+        }
     }
 
-    return response; 
+    return response;
 
 }

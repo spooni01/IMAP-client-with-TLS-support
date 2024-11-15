@@ -35,7 +35,7 @@ public:
     bool isReadOnlyNew() const { return readOnlyNew; }
     bool isHeadersOnly() const { return headersOnly; }
     const char* getAuthFile() const { return authFile.c_str(); }
-    const char* getMailbox() const { return mailbox.c_str(); }
+    const std::string& getMailbox() const { return mailbox; }
     const char* getOutDir() const { return outDir.c_str(); }
 
 private:

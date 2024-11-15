@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
+#include <filesystem>
 #include "openssl/bio.h"
 #include "openssl/ssl.h"
 #include "openssl/err.h"

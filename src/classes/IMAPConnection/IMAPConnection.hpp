@@ -124,7 +124,7 @@ public:
      *
      *  @return The server's response as a std::string.
      */
-    std::string readResponse();
+    std::string readResponse(const std::string& endCondition);
     
 };
 
