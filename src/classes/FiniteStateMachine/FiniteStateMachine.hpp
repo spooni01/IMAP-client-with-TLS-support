@@ -26,7 +26,8 @@ public:
         AUTH,
         SELECT,
         DOWNLOAD,
-        QUIT
+        QUIT,
+        END
     };
 
 
@@ -59,6 +60,10 @@ public:
 	 */
     void transitionToQuit();
 
+    /**
+	 *  @brief	Function transfer State to END.
+	 */
+    void transitionToEnd();
     
     /**
 	 *  @brief	Function return current State.

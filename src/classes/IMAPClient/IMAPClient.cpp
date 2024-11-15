@@ -21,8 +21,8 @@ IMAPClient::IMAPClient(int argc, char* argv[])
 {
 
 
-    // Loop until it is not end of program (FSM state = QUIT).
-    while(FSM.getState() != FiniteStateMachine::State::QUIT) {
+    // Loop until it is not end of program (FSM state = END).
+    while(FSM.getState() != FiniteStateMachine::State::END) {
 
         // INIT: When FSM state is INIT, switch to AUTH.
         if(FSM.getState() == FiniteStateMachine::State::INIT)
@@ -31,56 +31,74 @@ IMAPClient::IMAPClient(int argc, char* argv[])
         }
 
         // AUTH: Try to authorize user.
-        // TODO handle wrong answer, make internal counter for A001 etc.
         else if(FSM.getState() == FiniteStateMachine::State::AUTH)
         {
+            // Send login data.
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to login...");
-            std::string tmpLoginCommand = "A001 LOGIN " + authManager.getUsername() + " " + authManager.getPassword() + "\r\n";
+            std::string tmpLoginCommand = this->getNextCommand() + " LOGIN " + authManager.getUsername() + " " + authManager.getPassword() + "\r\n";
             connection.sendCommand(tmpLoginCommand.c_str());
-            DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A001 OK"));
-            DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Login successful.");
-        
-            // TODO if login success
-            FSM.transitionToSelect();
-            // else FSM.transitionToQuit();
+            
+            // Check if authorization was successfull.
+            std::string tmpServerResponse = connection.readResponse((this->getCurrentCommand() + " ").c_str());
+            if (tmpServerResponse.find((this->getCurrentCommand() + " OK").c_str()) != std::string::npos) {
+                DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Login successful.");
+                FSM.transitionToSelect();
+            }
+            else {
+                DEBUG_PRINT(ANSI_COLOR_RED, "IMAPClient::IMAPClient() -> Login failed.");
+                std::cout << "Není možné ověřit identitu serveru " << argsParser.getServer() << "." << std::endl;
+                FSM.transitionToEnd();
+            }
         }
 
         // SELECT: Select mailbox.
-        // TODO handle wrong answer, make internal counter for A001 etc.
         else if(FSM.getState() == FiniteStateMachine::State::SELECT)
         {
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to select mailbox...");
-            std::string tmpMailboxCommand = "A002 SELECT " + argsParser.getMailbox() + "\r\n";
+            std::string tmpMailboxCommand = this->getNextCommand() + " SELECT " + argsParser.getMailbox() + "\r\n";
             connection.sendCommand(tmpMailboxCommand.c_str());
-            DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A002 OK"));
-            DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Mailbox selected sucessful.");
-            
-            // TODO if mailbox success
-            FSM.transitionToDownload();
-            // else FSM.transitionToQuit();
+
+            // Receive answer.
+            std::string tmpServerResponse = connection.readResponse((this->getCurrentCommand() + " ").c_str());
+            if (tmpServerResponse.find((this->getCurrentCommand() + " OK").c_str()) != std::string::npos) {
+                DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Mailbox selected sucessful.");
+                FSM.transitionToDownload();
+            }
+            else {
+                DEBUG_PRINT(ANSI_COLOR_RED, "IMAPClient::IMAPClient() -> Mailbox do not exists.");
+                std::cout << "Mailbox " << argsParser.getMailbox() << " neexistuje." << std::endl;
+                FSM.transitionToQuit();
+            }
         }
         
         // DOWNLOAD: Download emails.
-        // TODO handle wrong answer, make internal counter for A001 etc.
+        // TODO handle wrong answer, repair code.
         else if(FSM.getState() == FiniteStateMachine::State::DOWNLOAD)
         {
+            
+            // Search messages.
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to fetching messages ID...");
             if(argsParser.isReadOnlyNew())
-            connection.sendCommand("A003 UID SEARCH UNSEEN\r\n");
+                connection.sendCommand((this->getNextCommand() + " UID SEARCH UNSEEN\r\n").c_str());
             else
-            connection.sendCommand("A003 UID SEARCH ALL\r\n");
-            DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A003 OK"));
+                connection.sendCommand((this->getNextCommand() + " UID SEARCH ALL\r\n").c_str());
+            DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse((this->getCurrentCommand() + " OK").c_str()));
             DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages ID`s fetched sucessful.");
 
+            // Download emails.
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to downloading emails...");
             if(argsParser.isHeadersOnly())
-            connection.sendCommand("A004 UID FETCH 2032 BODY.PEEK[HEADER]\r\n");
+                connection.sendCommand((this->getNextCommand() + " UID FETCH 2032 BODY.PEEK[HEADER]\r\n").c_str());
             else
-            connection.sendCommand("A004 UID FETCH 2032 BODY[]\r\n");
-            emails.addNewMessage(connection.readResponse("A004 OK"), argsParser.getOutDir());
+                connection.sendCommand((this->getNextCommand() + " UID FETCH 2032 BODY[]\r\n").c_str());
+            emails.addNewMessage(connection.readResponse((this->getCurrentCommand() + " OK").c_str()), argsParser.getOutDir());
+            cntEmails++;
 
             DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages downloaded sucessful.");
        
+            // Write output into STDOUT.
+            std::cout << "Staženo " << this->cntEmails << " zpráv ze schránky " << argsParser.getMailbox() << "." << std::endl;
+
             FSM.transitionToQuit();
         }
 
@@ -88,9 +106,11 @@ IMAPClient::IMAPClient(int argc, char* argv[])
         else if(FSM.getState() == FiniteStateMachine::State::QUIT)
         {
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to logout...");
-            connection.sendCommand("A010 LOGOUT\r\n");
-            DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A010 OK"));
+            connection.sendCommand((this->getNextCommand() + " LOGOUT\r\n").c_str());
+            DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse((this->getCurrentCommand() + " OK").c_str()));
             DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Logout succesfull.");
+
+            FSM.transitionToEnd();
         }
 
         // Error.
@@ -102,5 +122,32 @@ IMAPClient::IMAPClient(int argc, char* argv[])
 
     }
 
+
+}
+
+
+/**
+ * @brief Generates a sequential command string in the format "A###".
+ * @return The next command string.
+ */
+std::string IMAPClient::getNextCommand()
+{
+
+    std::ostringstream command;
+    command << "A" << std::setw(3) << std::setfill('0') << ++cntCommand;
+    return command.str();
+
+}
+
+/**
+ * @brief Returns command string in the format "A###".
+ * @return The current command string.
+ */
+std::string IMAPClient::getCurrentCommand()
+{
+
+    std::ostringstream command;
+    command << "A" << std::setw(3) << std::setfill('0') << cntCommand;
+    return command.str();
 
 }

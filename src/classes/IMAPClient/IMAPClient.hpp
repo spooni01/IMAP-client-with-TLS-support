@@ -38,6 +38,28 @@ public:
 private:
 
     /**
+     * @brief Counter for the command send.
+     */
+    int cntCommand = 0;
+
+    /**
+     * @brief Counter of emails.
+     */
+    int cntEmails = 0;
+
+    /**
+     * @brief Generates a sequential command string in the format "A###".
+     * @return The next command string.
+     */
+    std::string getNextCommand();
+
+    /**
+     * @brief Returns command string in the format "A###".
+     * @return The current command string.
+     */
+    std::string getCurrentCommand();
+
+    /**
      * @brief The ArgsParser object used to parse command-line arguments.
      * 
      * The ArgsParser is responsible for handling and validating command-line arguments,
