@@ -50,7 +50,7 @@ doc: $(OBJ_DIR) $(DOC_DIR)/$(DOC).tex
 	if [ -e $(DOC_DIR)/$(DOC).pdf ]; then mv $(DOC_DIR)/$(DOC).pdf $(DOC).pdf; fi
 
 test: make
-	g++ test/unit/init.cpp -o test/unit/run -lgtest -lgtest_main -lssl -lcrypto
+	g++ test/unit/__init__.cpp -o test/unit/run -lgtest -lgtest_main -lssl -lcrypto
 	./test/unit/run
 
 benchmark: make
