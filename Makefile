@@ -50,11 +50,11 @@ doc: $(OBJ_DIR) $(DOC_DIR)/$(DOC).tex
 	if [ -e $(DOC_DIR)/$(DOC).pdf ]; then mv $(DOC_DIR)/$(DOC).pdf $(DOC).pdf; fi
 
 test: make
-	g++ test/init.cpp -o test/run -lgtest -lgtest_main -lssl -lcrypto
-	./test/run
+	g++ test/unit/init.cpp -o test/unit/run -lgtest -lgtest_main -lssl -lcrypto
+	./test/unit/run
 
 benchmark: make
-	g++ -std=c++11 -O3 test/benchmark/init.cpp -lbenchmark
+	g++ -std=c++11 -O3 test/benchmark/__init__.cpp -lbenchmark
 
 valgrind:
 	valgrind --leak-check=full \
