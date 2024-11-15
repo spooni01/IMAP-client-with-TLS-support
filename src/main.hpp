@@ -55,6 +55,7 @@
 #include "exceptions/SSLException.cpp"
 
 // Include classes
+#include "classes/FiniteStateMachine/FiniteStateMachine.cpp"
 #include "classes/AuthManager/AuthManager.cpp"
 #include "classes/ArgsParser/ArgsParser.cpp"
 #include "classes/Message/Message.cpp"

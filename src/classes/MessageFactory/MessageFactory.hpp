@@ -37,8 +37,9 @@ public:
  	 *  @brief	Add new message to listOfMessages
 	 * 
 	 *  @param  nonParsedPacket Non parsed packet.
+	 *  @param  directory A directory where new message will be store.
 	 */
-	void addNewMessage(std::string nonParsedPacket);
+	void addNewMessage(std::string nonParsedPacket, std::string directory);
 
 };
 

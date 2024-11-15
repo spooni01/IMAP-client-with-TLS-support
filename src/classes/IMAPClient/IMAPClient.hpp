@@ -71,6 +71,14 @@ private:
      */
     MessageFactory emails;  
 
+    /**
+     * @brief The FiniteStateMachine (FSM) object that controls the state transitions.
+     * 
+     * The FiniteStateMachine object is responsible for managing the states and transitions
+     * within the application.
+     */
+    FiniteStateMachine FSM;
+
 };
 
 #endif // IMAPCLIENT_HPP

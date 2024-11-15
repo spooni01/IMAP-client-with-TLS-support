@@ -6,6 +6,7 @@
 #include "test_ArgsParser.cpp"
 #include "test_AuthManager.cpp"
 #include "test_Message.cpp"
+#include "test_FiniteStateMachine.cpp"
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

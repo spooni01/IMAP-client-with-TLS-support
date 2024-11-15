@@ -17,8 +17,9 @@ MessageFactory::MessageFactory() {}
  *  @brief	Add new message to listOfMessages
  * 
  *  @param  nonParsedPacket Non parsed packet.
+ *  @param  directory A directory where new message will be store.
  */
-void MessageFactory::addNewMessage(std::string nonParsedPacket)
+void MessageFactory::addNewMessage(std::string nonParsedPacket, std::string directory)
 {
 
     Message msg(nonParsedPacket);
@@ -26,7 +27,6 @@ void MessageFactory::addNewMessage(std::string nonParsedPacket)
 
 
     // Ensure the directory exists.
-    std::string directory = "maildir"; // TODO !!! directory change !!!
     if (!std::filesystem::exists(directory)) {
         if (!std::filesystem::create_directory(directory)) {
             throw std::runtime_error("Failed to create directory: " + directory);
