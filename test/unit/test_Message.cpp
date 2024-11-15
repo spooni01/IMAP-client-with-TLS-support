@@ -15,10 +15,7 @@ protected:
                                    "\nTest message body.\n)A004 OK Fetch completed (0.001 + 0.000 secs).\n";
 
     Message msg;
-
-    void SetUp() override {
-        msg = Message(rawMessage);
-    }
+    MessageTest() : msg(rawMessage) {}
 };
 
 TEST_F(MessageTest, ExtractUID) {
