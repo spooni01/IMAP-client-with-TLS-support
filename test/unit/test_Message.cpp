@@ -27,7 +27,7 @@ TEST_F(MessageTest, GetFormattedOutput) {
     std::string formattedOutput = msg.getFormattedOutput();
     
     EXPECT_TRUE(formattedOutput.find("Date: Fri, 15 Nov 2024 10:07:02 +0100") != std::string::npos);
-    EXPECT_TRUE(formattedOutput.find("From: Ližičiar Adam <xlizic00@stud.fit.vut.br>") != std::string::npos);
+    EXPECT_TRUE(formattedOutput.find("From: Ližičiar Adam <xlizic00@stud.fit.vutbr.cz>") != std::string::npos);
     EXPECT_TRUE(formattedOutput.find("Subject: Predmet") != std::string::npos);
 }
 
@@ -57,7 +57,7 @@ TEST_F(MessageTest, ParseMessage) {
     EXPECT_TRUE(body.find("Test message body.") != std::string::npos);
 
     std::map<std::string, std::string> headers = msg.headers;
-    EXPECT_EQ(headers.at("From"), "Ližičiar Adam <xlizic00@stud.fit.vut.br>");
+    EXPECT_EQ(headers.at("From"), "Ližičiar Adam <xlizic00@stud.fit.vutbr.cz>");
     EXPECT_EQ(headers.at("Subject"), "Predmet");
     EXPECT_EQ(headers.at("Date"), "Fri, 15 Nov 2024 10:07:02 +0100");
 }
