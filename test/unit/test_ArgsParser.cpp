@@ -6,10 +6,10 @@ TEST(ArgsParserTest, ValidMinimalArguments) {
 
     EXPECT_NO_THROW({
         ArgsParser parser(argc, const_cast<char**>(argv));
-        EXPECT_EQ(parser.getServer(), "imap.example.com");
-        EXPECT_EQ(parser.getAuthFile(), "auth.txt");
-        EXPECT_EQ(parser.getOutDir(), "output/");
-        EXPECT_EQ(parser.getPort(), 143); // Default port for non-TLS
+        EXPECT_EQ(parser.getServer(), std::string("imap.example.com"));
+        EXPECT_EQ(parser.getAuthFile(), std::string("auth.txt"));
+        EXPECT_EQ(parser.getOutDir(), std::string("output/"));
+        EXPECT_EQ(parser.getPort(), 143);
         EXPECT_FALSE(parser.isTLS());
     });
 }
@@ -21,7 +21,7 @@ TEST(ArgsParserTest, ValidTLSWithImplicitPort) {
     EXPECT_NO_THROW({
         ArgsParser parser(argc, const_cast<char**>(argv));
         EXPECT_TRUE(parser.isTLS());
-        EXPECT_EQ(parser.getPort(), 993); // Default port for TLS
+        EXPECT_EQ(parser.getPort(), 993);
     });
 }
 
@@ -58,8 +58,8 @@ TEST(ArgsParserTest, ValidCertificates) {
 
     EXPECT_NO_THROW({
         ArgsParser parser(argc, const_cast<char**>(argv));
-        EXPECT_EQ(parser.getCertFile(), "cert.pem");
-        EXPECT_EQ(parser.getCertDir(), "/certs");
+        EXPECT_EQ(parser.getCertFile(), std::string("cert.pem"));
+        EXPECT_EQ(parser.getCertDir(), std::string("/certs"));
     });
 }
 
