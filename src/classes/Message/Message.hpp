@@ -34,6 +34,10 @@ public:
      * @return A string containing the message ID without angle brackets.
      */
     std::string getFileName() const;
+    
+    
+    friend class MessageTest; // Access for testing.
+
 
 private:
 
