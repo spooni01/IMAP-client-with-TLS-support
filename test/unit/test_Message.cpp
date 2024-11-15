@@ -32,7 +32,7 @@ TEST_F(MessageTest, GetFormattedOutput) {
 }
 
 TEST_F(MessageTest, GetFileName) {
-    std::string expectedFileName = "452e6ebc8446c0eb59446aae5ca70615@stud.fit.vut.cz"; 
+    std::string expectedFileName = "Predmet_452e6ebc8446c0eb59446aae5ca70615@stud.fit.vut.cz"; 
     EXPECT_EQ(msg.getFileName(), expectedFileName);
 }
 
