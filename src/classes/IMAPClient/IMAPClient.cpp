@@ -20,7 +20,7 @@
 IMAPClient::IMAPClient(int argc, char* argv[]) 
         : argsParser(argc, argv), 
           authManager(argsParser.getAuthFile()),
-          connection(true, argsParser.getServer(), argsParser.getPort()) 
+          connection(false, argsParser.getServer(), argsParser.getPort()) 
 {
 
     // IMAP login
@@ -48,7 +48,10 @@ IMAPClient::IMAPClient(int argc, char* argv[])
 
     // Get emails TODO
     DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to downloading emails...");
-    connection.sendCommand("A004 UID FETCH 2032 BODY[]\r\n");
+    if(argsParser.isHeadersOnly())
+      connection.sendCommand("A004 UID FETCH 2032 BODY[]\r\n");
+    else
+      connection.sendCommand("A004 UID FETCH 2032 BODY.PEEK[HEADER]\r\n");
     emails.addNewMessage(connection.readResponse("A004 OK"));
 
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages downloaded sucessful.");
