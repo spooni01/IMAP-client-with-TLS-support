@@ -1,6 +1,4 @@
 #include <gtest/gtest.h>
-#include "../../src/exceptions/ArgumentsException.cpp"
-#include "../../src/classes/ArgsParser/ArgsParser.cpp"
 
 TEST(ArgsParserTest, ValidMinimalArguments) {
     const char* argv[] = { "program", "imap.example.com", "-a", "auth.txt", "-o", "output/" };

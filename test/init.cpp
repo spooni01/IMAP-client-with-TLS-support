@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "../src/main.hpp"
+
 #include "unit/test_ArgsParser.cpp"
 
 int main(int argc, char **argv) {
