@@ -2,6 +2,7 @@
 
 #include "../src/main.hpp"
 
+#include "unit/test_exceptions.cpp"
 #include "unit/test_ArgsParser.cpp"
 #include "unit/test_AuthManager.cpp"
 
