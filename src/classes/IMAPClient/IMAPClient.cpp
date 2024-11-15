@@ -74,7 +74,6 @@ IMAPClient::IMAPClient(int argc, char* argv[])
         }
         
         // DOWNLOAD: Download emails.
-        // TODO handle wrong answer, repair code.
         else if(FSM.getState() == FiniteStateMachine::State::DOWNLOAD)
         {
             
@@ -84,23 +83,44 @@ IMAPClient::IMAPClient(int argc, char* argv[])
                 connection.sendCommand((this->getNextCommand() + " UID SEARCH UNSEEN\r\n").c_str());
             else
                 connection.sendCommand((this->getNextCommand() + " UID SEARCH ALL\r\n").c_str());
-            DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse((this->getCurrentCommand() + " OK").c_str()));
+            std::string tmpServerResponse = connection.readResponse((this->getCurrentCommand() + " OK").c_str());
+            
+            // Fetch ID`s.
+            std::vector<std::string> numbers;
+            std::regex numberRegex(R"(\d+)");
+            std::smatch match;
+
+            // Find the SEARCH line.
+            std::size_t searchPos = tmpServerResponse.find("* SEARCH");
+            if (searchPos != std::string::npos) {
+                std::string searchLine = tmpServerResponse.substr(searchPos, tmpServerResponse.find('\n', searchPos) - searchPos);
+                auto begin = std::sregex_iterator(searchLine.begin(), searchLine.end(), numberRegex);
+                auto end = std::sregex_iterator();
+
+                for (std::sregex_iterator i = begin; i != end; ++i) 
+                    numbers.push_back((*i).str());  
+            }
             DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages ID`s fetched sucessful.");
 
             // Download emails.
-            // TODO!!!
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to downloading emails...");
-            if(argsParser.isHeadersOnly())
-                connection.sendCommand((this->getNextCommand() + " UID FETCH 2032 BODY.PEEK[HEADER]\r\n").c_str());
-            else
-                connection.sendCommand((this->getNextCommand() + " UID FETCH 2032 BODY[]\r\n").c_str());
-            emails.addNewMessage(connection.readResponse((this->getCurrentCommand() + " OK").c_str()), argsParser.getOutDir());
-            cntEmails++;
-
+            for (std::string number : numbers) {
+                if(argsParser.isHeadersOnly())
+                    connection.sendCommand((this->getNextCommand() + " UID FETCH " + number + " BODY.PEEK[HEADER]\r\n").c_str());
+                else
+                    connection.sendCommand((this->getNextCommand() + " UID FETCH " + number + " BODY[]\r\n").c_str());
+                emails.addNewMessage(connection.readResponse((this->getCurrentCommand() + " OK").c_str()), argsParser.getOutDir());
+                cntEmails++;
+            }
             DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages downloaded sucessful.");
        
             // Write output into STDOUT.
-            std::cout << "Staženo " << this->cntEmails << " zpráv ze schránky " << argsParser.getMailbox() << "." << std::endl;
+            if(this->cntEmails == 1)
+                std::cout << "Stažena " << this->cntEmails << " zpráva ze schránky " << argsParser.getMailbox() << "." << std::endl;
+            else if(this->cntEmails < 5)
+                std::cout << "Staženy " << this->cntEmails << " zprávy ze schránky " << argsParser.getMailbox() << "." << std::endl;
+            else
+                std::cout << "Staženo " << this->cntEmails << " zpráv ze schránky " << argsParser.getMailbox() << "." << std::endl;
 
             FSM.transitionToQuit();
         }
