@@ -1,5 +1,3 @@
-#include <gtest/gtest.h>
-
 TEST(ArgsParserTest, ValidMinimalArguments) {
     const char* argv[] = { "program", "imap.example.com", "-a", "auth.txt", "-o", "output/" };
     int argc = sizeof(argv) / sizeof(argv[0]);
