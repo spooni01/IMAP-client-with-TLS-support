@@ -18,6 +18,13 @@
 #include <fstream>
 #include <vector>
 #include <filesystem>
+#include <regex>
+#include <bitset>
+#include <sstream>
+#include <cctype>
+#include <map>
+#include <iomanip>
+#include <iterator>
 #include "openssl/bio.h"
 #include "openssl/ssl.h"
 #include "openssl/err.h"

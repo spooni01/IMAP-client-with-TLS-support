@@ -26,6 +26,9 @@ MessageFactory::MessageFactory()
 void MessageFactory::addNewMessage(std::string nonParsedPacket)
 {
 
+    // Parse
+    Message msg(nonParsedPacket);
+
     // Ensure the directory 'maildir' exists
     std::string directory = "maildir";
     if (!std::filesystem::exists(directory)) {
@@ -35,7 +38,7 @@ void MessageFactory::addNewMessage(std::string nonParsedPacket)
     }
 
     // Define the file path
-    std::string filePath = directory + "/1.txt";
+    std::string filePath = directory + "/" + msg.getFileName() + ".txt";
 
     // Open the file and write the content
     std::ofstream outFile(filePath);
@@ -43,7 +46,7 @@ void MessageFactory::addNewMessage(std::string nonParsedPacket)
         throw std::runtime_error("Failed to open file for writing: " + filePath);
     }
 
-    outFile << nonParsedPacket;
+    outFile << msg.getFormattedOutput();
     if (!outFile.good()) {
         throw std::runtime_error("Failed to write to file: " + filePath);
     }

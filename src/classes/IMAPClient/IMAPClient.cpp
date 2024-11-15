@@ -20,21 +20,21 @@
 IMAPClient::IMAPClient(int argc, char* argv[]) 
         : argsParser(argc, argv), 
           authManager(argsParser.getAuthFile()),
-          connection(false, argsParser.getServer(), argsParser.getPort()) 
+          connection(true, argsParser.getServer(), argsParser.getPort()) 
 {
 
     // IMAP login
     DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to login...");
     std::string tmpLoginCommand = "A001 LOGIN " + authManager.getUsername() + " " + authManager.getPassword() + "\r\n";
     connection.sendCommand(tmpLoginCommand.c_str());
-    std::cout << connection.readResponse("A001 OK") << std::endl;
+    DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A001 OK"));
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Login successful.");
 
     // Select the mailbox
     DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to select mailbox...");
     std::string tmpMailboxCommand = "A002 SELECT " + argsParser.getMailbox() + "\r\n";
     connection.sendCommand(tmpMailboxCommand.c_str());
-    std::cout << connection.readResponse("A002 OK") << std::endl;
+    DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A002 OK"));
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Mailbox selected sucessful.");
 
     // Fetch messages
@@ -43,15 +43,15 @@ IMAPClient::IMAPClient(int argc, char* argv[])
       connection.sendCommand("A003 UID SEARCH UNSEEN\r\n");
     else
       connection.sendCommand("A003 UID SEARCH ALL\r\n");
-    std::cout << connection.readResponse("A003 OK") << std::endl;
+    DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A003 OK"));
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages ID`s fetched sucessful.");
 
     // Get emails TODO
     DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to downloading emails...");
     if(argsParser.isHeadersOnly())
-      connection.sendCommand("A004 UID FETCH 2032 BODY[]\r\n");
-    else
       connection.sendCommand("A004 UID FETCH 2032 BODY.PEEK[HEADER]\r\n");
+    else
+      connection.sendCommand("A004 UID FETCH 2032 BODY[]\r\n");
     emails.addNewMessage(connection.readResponse("A004 OK"));
 
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages downloaded sucessful.");
@@ -59,7 +59,7 @@ IMAPClient::IMAPClient(int argc, char* argv[])
     // Logout and close the connection
     DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to logout...");
     connection.sendCommand("A010 LOGOUT\r\n");
-    std::cout << connection.readResponse("A010 OK") << std::endl;
+    DEBUG_PRINT(ANSI_COLOR_ORANGE, "IMAPClient::IMAPClient() -> "+connection.readResponse("A010 OK"));
     DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Logout succesfull.");
 
 }
