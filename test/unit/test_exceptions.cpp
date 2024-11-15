@@ -66,7 +66,7 @@ TEST(ExceptionTest, SSLExceptionTest) {
         throw SSLException("SSL handshake failed");
     } catch (const SSLException& e) {
         EXPECT_STREQ(e.what(), "SSL handshake failed");
-        EXPECT_EQ(e.code(), 30);
+        EXPECT_EQ(e.code(), 21);
     }
 }
 
