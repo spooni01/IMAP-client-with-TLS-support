@@ -158,7 +158,7 @@
 		Trieda riadi tok programu pomocou konečného stavového automatu (FSM). Obsahuje stavy programu a metódy na ich prechod, a to konkrétne stavy INIT, AUTH, SELECT, DOWNLOAD, QUIT a END (viď \ref{subsection:usecase}).
 	
 		\item \textbf{AuthManager} \\
-		Spravuje autentifikáciu používateľa. Zabezpečuje získanie prihlasovacích údajov a ich správne uloženie do tejto triedy. Autentifikačný súbor musí mať formát \texttt{username =  xxx} a na ďalšom riadku \texttt{password =  yyy}.
+		Spravuje autentifikáciu používateľa. Zabezpečuje získanie prihlasovacích údajov a ich správne uloženie do tejto triedy. Autentifikačný súbor musí mať formát \texttt{username =  xxx} a na ďalšom riadku \texttt{password =  yyy}. Pri neexistujúcom súbore skončí program vyvolaním výnimku a pri nesprávnych údajoch skončí program s nulovým návratovým kódom a oznámením, že sa nepodarilo overiť identitu na strane servera.
 	
 		\item \textbf{ArgsParser} \\
 		Zodpovedá za spracovanie argumentov príkazového riadku. Umožňuje používateľovi zadať konfiguráciu, ako je názov servera, portu, a ďalšie možnosti.
@@ -170,7 +170,7 @@
 		Zodpovedá za vytváranie inštancií správ. Prijíma surové dáta zo servera a transformuje ich na objekt typu `Message`. Po spracovaní týchto dát je každá e-mailová správa uložená do vlastného súboru, ktorý má nazov vo formáte \texttt{SUBJECT\_IDMESSAGE.txt}. Tento názov bol zvolený pretože je jedinečný pre akékoľvek emailové správy (vďaka IDMESSAGE) a zároveň je prehľadný kvôli použitiu predmetu správy v názve.
 	
 		\item \textbf{IMAPConnection} \\
-		Spravuje spojenie so serverom pomocou protokolu IMAP(S). Umožňuje odosielať príkazy na server, prijímať odpovede a spracúvať komunikáciu\cite{opennsslapi}.
+		Spravuje spojenie so serverom pomocou protokolu IMAP(S). Umožňuje odosielať príkazy na server, prijímať odpovede a spracúvať komunikáciu\cite{opennsslapi}. V tejto triede je vo funckii na prijatie odpovedí zabudovaný časovač, ktorý má dĺžku 10 sekúnd a slúži na ukončenie programu v prípade, že by server prestal odpovedať.
 	
 		\item \textbf{IMAPClient} \\
 		Hlavná trieda, ktorá integruje všetky ostatné komponenty. Implementuje logiku programu na riadenie stavového automatu, vykonáva autentifikáciu a sťahovanie e-mailových správ.

@@ -233,10 +233,21 @@ std::string IMAPConnection::readResponse(const std::string& endCondition)
     int bytes;
     std::string response; 
 
+    // Start a timer to track elapsed time.
+    auto start = std::chrono::steady_clock::now();
+
     // Secure connection (SSL) or non-secure (BIO).
     if (this->secure) {
 
         while ((bytes = SSL_read(this->ssl, buffer, sizeof(buffer) - 1)) > 0) {
+            // Check if timeout has occurred.
+            auto now = std::chrono::steady_clock::now();
+            std::chrono::duration<double> elapsed_seconds = now - start;
+            if (elapsed_seconds.count() > 10) {
+                DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::readResponse() -> Timeout occurred while reading response.");
+                throw IMAPException("Timeout expired");
+            }
+            
             buffer[bytes] = '\0';  
             response += buffer;
 
@@ -262,6 +273,14 @@ std::string IMAPConnection::readResponse(const std::string& endCondition)
     } else {
 
         while ((bytes = BIO_read(this->bio, buffer, sizeof(buffer) - 1)) > 0) {
+            // Check if timeout has occurred.
+            auto now = std::chrono::steady_clock::now();
+            std::chrono::duration<double> elapsed_seconds = now - start;
+            if (elapsed_seconds.count() > 10) {
+                DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::readResponse() -> Timeout occurred while reading response.");
+                throw IMAPException("Timeout expired");
+            }
+            
             buffer[bytes] = '\0';  
             response += buffer;    
 

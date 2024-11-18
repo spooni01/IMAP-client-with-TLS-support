@@ -4,8 +4,8 @@ IMAP je sieťový protokol, ktorý umožnuje klientovi pristupovať k e-mailom, 
 TLS je šifrovací protokol, ktorý robí komunikáciu medzi dvoma zariadeniami bezpečnejšou, teda v prípade tohto programu ochraňuje prenos údajov medzi klientom a serverom. V prípade, keď sa pripája klient pomocou IMAPS, automaticky sa vytvorí TLS spojenie, ktoré túto komunikáciu zabezpečuje.<br>
 IMAPS je teda komunikácia protokolom IMAP s podporou šifrovacieho protokolu TLS.<br>
 
-### Možné chyby
-* Zo zatiaľ nezistených príčin nastáva niekedy problém pri overovaní certifikátov a pripájaní sa na takéto serveri
+### Odchylky od zadania
+* Pri neexistujúcom autorizačnom súbore skončí program vyvolaním výnimky a pri nesprávnych údajoch (v existujúcom súbore) skončí program s nulovým návratovým kódom a s oznámením, že sa nepodarilo overiť identitu na strane servera. Napr. `./imapcl ... -a non_existing_file.txt` skončí výnimkou a nie textom `Není možné ověřit identitu serveru xxx.` ako bolo uvedené v zadaní.
 
 ### Použitie programu
 ```
