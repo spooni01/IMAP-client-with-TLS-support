@@ -89,7 +89,7 @@
 	Program sa spúšťa s nasledujúcimi parametrami:
 	\begin{lstlisting}
 	./imapcl server [-p port] [-T [-c certfile] [-C certaddr]]
-	[-n] [-h] -a auth_file [-b MAILBOX] -o out_dir
+	[-n] [-h] -a auth_file [-b MAILBOX] -o out_dir [-i]
 	\end{lstlisting}		
 	Poradie parametrov je ľubovoľné. Popis parametrov je nasledovný:
 	\begin{itemize}
@@ -103,6 +103,7 @@
 		\item Povinný parameter \texttt{-a auth\_file} odkazuje na súbor s autentifikačnými údajmi.
 		\item Parameter \texttt{-b} špecifikuje názov schránky, s ktorou sa bude na serveri pracovať. Výchozia hodnota je \texttt{INBOX}.
 		\item Povinný parameter \texttt{-o out\_dir} určuje výstupný adresár, do ktorého má program uložiť stiahnuté správy.
+		\item Parameter \texttt{-i} spustí interaktívny režim (príkazy DONWLOADALL, DONWLOADNEW, QUIT).
 	\end{itemize}
 
 	\section{Architektúra programu}

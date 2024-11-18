@@ -13,7 +13,7 @@
  * @param argc The number of command-line arguments.
  * @param argv The array of argument strings.
  */
-ArgsParser::ArgsParser(int argc, char* argv[]) : port(0), useTLS(false), readOnlyNew(false), headersOnly(false)
+ArgsParser::ArgsParser(int argc, char* argv[]) : port(0), useTLS(false), headersOnly(false)
 {
     
     DEBUG_PRINT(ANSI_COLOR_GRAY, "ArgsParser::ArgsParser() -> Starting of parsing of argument...");
@@ -50,6 +50,8 @@ void ArgsParser::parseArguments(int argc, char* argv[])
             readOnlyNew = true;
         } else if (arg == "-h") {
             headersOnly = true;
+        } else if (arg == "-i") {
+            interactive = true;
         } else if (arg == "-a" && i + 1 < argc) {
             authFile = argv[++i];
         } else if (arg == "-b" && i + 1 < argc) {

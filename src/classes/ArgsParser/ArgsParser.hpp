@@ -37,6 +37,9 @@ public:
     const char* getAuthFile() const { return authFile.c_str(); }
     const std::string& getMailbox() const { return mailbox; }
     const char* getOutDir() const { return outDir.c_str(); }
+    bool interactive = false;
+    bool readOnlyNew = false;
+    std::string mailbox = "INBOX"; 
 
 private:
 
@@ -45,10 +48,8 @@ private:
     bool useTLS;
     std::string certFile;
     std::string certDir = "/etc/ssl/certs";  
-    bool readOnlyNew;
     bool headersOnly;
-    std::string authFile;
-    std::string mailbox = "INBOX";     
+    std::string authFile;    
     std::string outDir;
 
     /**

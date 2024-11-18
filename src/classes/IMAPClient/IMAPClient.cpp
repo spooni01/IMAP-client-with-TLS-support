@@ -69,7 +69,7 @@ IMAPClient::IMAPClient(int argc, char* argv[])
             }
             else {
                 DEBUG_PRINT(ANSI_COLOR_RED, "IMAPClient::IMAPClient() -> Mailbox do not exists.");
-                std::cout << "Mailbox " << argsParser.getMailbox() << " neexistuje." << std::endl;
+                std::cout << "Mailbox " << argsParser.getMailbox() << " do not exists." << std::endl;
                 FSM.transitionToQuit();
             }
         }
@@ -128,7 +128,51 @@ IMAPClient::IMAPClient(int argc, char* argv[])
             else
                 std::cout << "Staženo " << this->cntEmails << " zpráv ze schránky " << argsParser.getMailbox() << "." << std::endl;
 
-            FSM.transitionToQuit();
+            // Check if interactive or not.
+            if(argsParser.interactive) {
+                std::string input;
+                this->cntEmails = 0;
+
+                // Read line.
+                while (std::getline(std::cin, input)) {
+                    std::vector<std::string> tokens;
+                    std::istringstream iss(input);
+                    std::copy(std::istream_iterator<std::string>(iss),
+                            std::istream_iterator<std::string>(),
+                            std::back_inserter(tokens));    
+
+                    if (tokens[0] == "DOWNLOADALL") {
+
+                        if (tokens.size() == 1) {
+                            argsParser.readOnlyNew = false;
+                        } else if (tokens.size() == 2) {
+                            argsParser.mailbox = tokens[1];
+                            argsParser.readOnlyNew = false;
+                        } 
+                        FSM.transitionToSelect();
+                        break;
+
+                    } else if (tokens[0] == "DOWNLOADNEW") {
+
+                        if (tokens.size() == 1) {
+                            argsParser.readOnlyNew = true;
+                        } else if (tokens.size() == 2) {
+                            argsParser.mailbox = tokens[1];
+                            argsParser.readOnlyNew = true;
+                        }
+                        FSM.transitionToSelect();
+                        break;
+
+                    } else if (tokens[0] == "QUIT") {
+                        FSM.transitionToQuit();
+                        break;
+                    } else {
+                        throw CommandException("Invalid command");
+                    }
+                }
+            }
+            else
+                FSM.transitionToQuit();
         }
 
         // QUIT: Quit application, logout and close the connection.
