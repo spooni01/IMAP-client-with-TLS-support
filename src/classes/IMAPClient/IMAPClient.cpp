@@ -18,7 +18,8 @@
 IMAPClient::IMAPClient(int argc, char* argv[]) 
         : argsParser(argc, argv), 
           authManager(argsParser.getAuthFile()),
-          connection(argsParser.isTLS(), argsParser.getServer(), argsParser.getPort()) 
+          connection(argsParser.isTLS(), argsParser.getServer(), argsParser.getPort()),
+          emails(argsParser.getOutDir())
 {
 
 
@@ -105,12 +106,17 @@ IMAPClient::IMAPClient(int argc, char* argv[])
             // Download emails.
             DEBUG_PRINT(ANSI_COLOR_GRAY, "IMAPClient::IMAPClient() -> Trying to downloading emails...");
             for (std::string number : numbers) {
-                if(argsParser.isHeadersOnly())
-                    connection.sendCommand((this->getNextCommand() + " UID FETCH " + number + " BODY.PEEK[HEADER]\r\n").c_str());
-                else
-                    connection.sendCommand((this->getNextCommand() + " UID FETCH " + number + " BODY[]\r\n").c_str());
-                emails.addNewMessage(connection.readResponse((this->getCurrentCommand() + " OK").c_str()), argsParser.getOutDir());
-                cntEmails++;
+                if(!emails.existsInDataStorage(argsParser.getServer(), std::stoi(number))) {
+                    if(argsParser.isHeadersOnly())
+                        connection.sendCommand((this->getNextCommand() + " UID FETCH " + number + " BODY.PEEK[HEADER]\r\n").c_str());
+                    else
+                        connection.sendCommand((this->getNextCommand() + " UID FETCH " + number + " BODY[]\r\n").c_str());
+                    
+                    // Internal synchronization procedures.
+                    emails.addNewMessage(connection.readResponse((this->getCurrentCommand() + " OK").c_str()), argsParser.getOutDir());
+                    emails.addToDataStorage(argsParser.getServer(), std::stoi(number));
+                    cntEmails++;
+                }
             }
             DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPClient::IMAPClient() -> Messages downloaded sucessful.");
        

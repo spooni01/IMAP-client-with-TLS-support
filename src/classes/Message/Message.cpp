@@ -15,7 +15,22 @@
 Message::Message(const std::string& rawMessage)
 {
 
-    parseMessage(rawMessage);
+    // For new message from server.
+    if(rawMessage != "")
+        parseMessage(rawMessage);
+        
+}
+
+
+/**
+ * @brief Set uniqie ID of message.
+ * 
+ * @param msgID ID of message.
+ */
+void Message::setMessageID(std::string msgID)
+{
+
+    this->messageID = msgID;
 
 }
 

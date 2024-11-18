@@ -22,6 +22,13 @@ public:
     Message(const std::string& rawMessage);
 
     /**
+     * @brief Set unique ID of message.
+     * 
+     * @param msgID ID of message.
+     */
+    void setMessageID(std::string msgID);
+
+    /**
      * @brief Get the formatted output of the parsed email message.
      *
      * @return A formatted string containing the email headers and body.
