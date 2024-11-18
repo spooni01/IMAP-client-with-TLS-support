@@ -18,7 +18,7 @@
 IMAPClient::IMAPClient(int argc, char* argv[]) 
         : argsParser(argc, argv), 
           authManager(argsParser.getAuthFile()),
-          connection(true, argsParser.getServer(), argsParser.getPort()) 
+          connection(argsParser.isTLS(), argsParser.getServer(), argsParser.getPort()) 
 {
 
 
@@ -28,7 +28,7 @@ IMAPClient::IMAPClient(int argc, char* argv[])
 
         // INIT: When FSM state is INIT, switch to AUTH.
         if(FSM.getState() == FiniteStateMachine::State::INIT)
-        {
+        {            
             FSM.transitionToAuth();
         }
 

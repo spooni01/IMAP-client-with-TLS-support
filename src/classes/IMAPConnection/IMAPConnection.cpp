@@ -201,13 +201,14 @@ void IMAPConnection::sendCommand(const char *command)
         DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::sendCommand() -> IMAP command sent via SSL.");
    
     } else {
-        
-        BIO *bio = BIO_new(BIO_s_mem());  // Create a BIO for memory.
-        if (BIO_write(bio, command, strlen(command)) <= 0) {
+
+        int len = strlen(command);
+        if (BIO_write(bio, command, len) <= 0) {
             DEBUG_PRINT(ANSI_COLOR_RED, "IMAPConnection::sendCommand() -> Unable to send command via BIO");
             ERR_print_errors_fp(stderr);
             throw BIOException("Unable to send command via BIO.");
         }
+
         DEBUG_PRINT(ANSI_COLOR_GREEN, "IMAPConnection::sendCommand() -> IMAP command sent via BIO.");
     
     }

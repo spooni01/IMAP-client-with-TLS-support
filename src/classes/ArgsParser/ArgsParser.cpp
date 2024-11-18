@@ -67,6 +67,8 @@ void ArgsParser::parseArguments(int argc, char* argv[])
     // If TLS is disabled and no port was specified, default to the standard IMAP port (143).
     if (!useTLS && port == 0)
         port = 143;
+    else if (useTLS && port == 0)
+        port = 993;
 
 }
 
