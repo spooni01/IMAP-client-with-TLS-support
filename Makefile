@@ -31,6 +31,8 @@ $(OBJ_DIR):
 
 doc: $(OBJ_DIR) $(DOC_DIR)/$(DOC).tex
 	cd $(DOC_DIR) && pdflatex $(DOC).tex
+	make bibtex
+	cd $(DOC_DIR) && pdflatex $(DOC).tex
 	cd $(DOC_DIR) && pdflatex $(DOC).tex
 	cd $(DOC_DIR) && pdflatex $(DOC).tex
 	cd ../
@@ -48,6 +50,9 @@ doc: $(OBJ_DIR) $(DOC_DIR)/$(DOC).tex
 	if [ -e $(DOC_DIR)/$(DOC).toc ]; then mv $(DOC_DIR)/$(DOC).toc $(OBJ_DIR)/$(DOC).toc; fi
 	if [ -e $(DOC_DIR)/$(DOC).pdf.filepart ]; then mv $(DOC_DIR)/$(DOC).pdf.filepart $(OBJ_DIR)/$(DOC).pdf.filepart; fi
 	if [ -e $(DOC_DIR)/$(DOC).pdf ]; then mv $(DOC_DIR)/$(DOC).pdf $(DOC).pdf; fi
+
+bibtex: $(DOC_DIR)/bib/$(DOC).bib
+	cd $(DOC_DIR) && bibtex $(DOC)
 
 test: make
 	g++ test/unit/__init__.cpp -o test/unit/run -lgtest -lgtest_main -lssl -lcrypto
@@ -72,4 +77,4 @@ clean:
 	rm -f $(PROGRAM_NAME)_debug
 
 pack:
-	tar -cvf xlizic00.tar .
+	tar -cvf xlizic00.tar *

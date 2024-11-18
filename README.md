@@ -1,11 +1,11 @@
-# IMAP klient s TLS podporou
-Program umožnuje čítať e-maily pomocou IMAP4rev1 (RFC 3501) protokolu. <br>
+# IMAP klient s podporou TLS
+Hlavným zmyslom tohto programu je umožniť používateľovi čítanie emailov zo svojej emailovej schránky pomocou IMAP(S) protokolu s možnou podporou šifrovacieho protokolu TLS.<br>
+IMAP je sieťový protokol, ktorý umožnuje klientovi pristupovať k e-mailom, ktoré sú umiestnené na vzdialenom serveri. Tento protokol umožnuje synchronizáciu medzi klientom a serverom, a teda je možný prístup k svojím e-mailom z rôznych zariadení.<br>
+TLS je šifrovací protokol, ktorý robí komunikáciu medzi dvoma zariadeniami bezpečnejšou, teda v prípade tohto programu ochraňuje prenos údajov medzi klientom a serverom. V prípade, keď sa pripája klient pomocou IMAPS, automaticky sa vytvorí TLS spojenie, ktoré túto komunikáciu zabezpečuje.<br>
+IMAPS je teda komunikácia protokolom IMAP s podporou šifrovacieho protokolu TLS.<br>
 
 ### Možné chyby
-* Zo zatiaľ nezistených príčin nastáva niekedy problém pri overovaní certifikátov
-
-### Rozšírenia 
-* TODO
+* Zo zatiaľ nezistených príčin nastáva niekedy problém pri overovaní certifikátov a pripájaní sa na takéto serveri
 
 ### Použitie programu
 ```
@@ -16,8 +16,14 @@ imapcl server [-p port] [-T [-c certfile] [-C certaddr]] [-n] [-h] -a auth_file 
 ```
 .
 ├── doc
+│   ├── bib
+│   │   ├── czechiso.bst
+│   │   ├── manual.bib
 │   ├── res
 │   │   ├── logo_FIT.pdf
+│   │   ├── diagram_class.png
+│   │   ├── diagram_usecase.png
+│   │   ├── diagram_sequence.pdf
 │   ├── manual.tex
 ├── src
 │   ├── classes
@@ -74,4 +80,4 @@ imapcl server [-p port] [-T [-c certfile] [-C certaddr]] [-n] [-h] -a auth_file 
 
 ### Author
 Adam Ližičiar (xlizic00@vutbr.cz)<br>
-Vytvorené dňa 16.11.2024
+Vytvorené dňa 17.11.2024
