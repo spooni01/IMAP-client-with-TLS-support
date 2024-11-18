@@ -80,4 +80,4 @@ imapcl server [-p port] [-T [-c certfile] [-C certaddr]] [-n] [-h] -a auth_file 
 
 ### Author
 Adam Ližičiar (xlizic00@vutbr.cz)<br>
-Vytvorené dňa 17.11.2024
+Vytvorené dňa 18.11.2024

@@ -139,6 +139,9 @@ std::string Message::getFileName() const
 /**
  * @brief Decodes MIME-encoded text.
  * 
+ * ! IMPORTANT: This function was inspired from funcion in library
+ * mimetic (https://www.codesink.org/mimetic_mime_library.html).
+ * 
  * @param text The MIME-encoded string to decode.
  * @return A string containing the decoded text.
  */
